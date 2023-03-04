@@ -56,6 +56,7 @@
             square.textContent = currentPlayer.toUpperCase();
             square.setAttribute('aria-checked', true);
             currentPlayer = currentPlayer === 'x' ? 'o' : 'x';
+            checkWin();
         }
 
         squares.forEach((square, index) => {
@@ -70,7 +71,45 @@
             square.setAttribute('aria-setsize', squares.length);
             square.setAttribute('role', 'checkbox');
         });
-    </script>
+
+        function checkWin() {
+            // all possible winning combinations
+            const winningCombos = [
+                [0, 1, 2], [3, 4, 5], [6, 7, 8], // rows
+                [0, 3, 6], [1, 4, 7], [2, 5, 8], // columns
+                [0, 4, 8], [2, 4, 6] // diagonals
+            ];
+
+            // loop through all winning combinations
+            for (let i = 0; i < winningCombos.length; i++) {
+                const combo = winningCombos[i];
+                const square1 = squares[combo[0]];
+                const square2 = squares[combo[1]];
+                const square3 = squares[combo[2]];
+                if (square1.classList.contains(currentPlayer) && 
+                    square2.classList.contains(currentPlayer) && 
+                    square3.classList.contains(currentPlayer)) {
+                    alert(`${currentPlayer.toUpperCase()} wins!`);
+                    squares.forEach(square => {
+                        square.removeEventListener('click', handleSquareClick);
+                        square.removeEventListener('keydown', handleSquareClick);
+                    })                 return;
+            }
+        }
+
+        // check for tie game
+        const isTie = Array.from(squares).every(square => {
+            return square.classList.contains('x') || square.classList.contains('o');
+        });
+
+        if (isTie) {
+            alert('Tie game!');
+            squares.forEach(square => {
+                square.removeEventListener('click', handleSquareClick);
+                square.removeEventListener('keydown', handleSquareClick);
+            });
+        }
+    }
+</script>
 </body>
 </html>
-    
