@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>X O</title>
+    <style>
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            width: 300px;
+            margin: 0 auto;
+        }
+
+        .square {
+            width: 100px;
+            height: 100px;
+            border: 1px solid black;
+            text-align: center;
+            font-size: 60px;
+            cursor: pointer;
+        }
+
+        .x {
+            color: red;
+        }
+
+        .o {
+            color: blue;
+        }
+    </style>
+</head>
+<body>
+    <h1>X O</h1>
+    <div class="container">
+        <button class="square" aria-label="Square 1"></button>
+        <button class="square" aria-label="Square 2"></button>
+        <button class="square" aria-label="Square 3"></button>
+        <button class="square" aria-label="Square 4"></button>
+        <button class="square" aria-label="Square 5"></button>
+        <button class="square" aria-label="Square 6"></button>
+        <button class="square" aria-label="Square 7"></button>
+        <button class="square" aria-label="Square 8"></button>
+        <button class="square" aria-label="Square 9"></button>
+    </div>
+
+    <script>
+        const squares = document.querySelectorAll('.square');
+        let currentPlayer = 'x';
+
+        function handleSquareClick(e) {
+            const square = e.target;
+            if (square.classList.contains('x') || square.classList.contains('o')) {
+                return;
+            }
+            square.classList.add(currentPlayer);
+            square.textContent = currentPlayer.toUpperCase();
+            square.setAttribute('aria-checked', true);
+            currentPlayer = currentPlayer === 'x' ? 'o' : 'x';
+        }
+
+        squares.forEach((square, index) => {
+            square.addEventListener('click', handleSquareClick);
+            square.addEventListener('keydown', (e) => {
+                if (e.key === ' ' || e.key === 'Enter') {
+                    handleSquareClick(e);
+                    e.preventDefault();
+                }
+            });
+            square.setAttribute('aria-posinset', index + 1);
+            square.setAttribute('aria-setsize', squares.length);
+            square.setAttribute('role', 'checkbox');
+        });
+    </script>
+</body>
+</html>
+    
